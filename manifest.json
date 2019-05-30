@@ -1,0 +1,25 @@
+{
+    "manifest_version": 2,
+    "name": "Debug0.1",
+    "description": "description",
+    "version": "0.1",
+    "author": "Jake Prins",
+    "browser_action": {
+        "default_icon": "tab-icon.png",
+        "default_title": "Have a good day"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab"
+    ],
+    "content_scripts":[
+        {
+            "matches": ["*://redmine.city-srv.ru/issues/*"],
+            "run_at": "document_idle",
+            "js": ["contentScript.js"]
+        }
+    ],
+    "web_accessible_resources": [
+        "tmp.json"
+    ]
+}
