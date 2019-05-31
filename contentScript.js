@@ -32,24 +32,29 @@ function getJSON() {
 }
 
 function saveJSON(inData) {
-    inJSON = inData
+    inJSON = inData;
 }
 
-function pushTextToJSON(text, status, statusDict) {
+function pushTextToJSON(text, status) {
     // 1. checkout if we already have our task in json
     for (var i = 0; i < statusList.length; i++) {
+        // console.log(Object.keys(inJSON.statuses).length);
         var item = statusList[i];
-        for (var j = 0; j < statusDict[item].length; j++) {
-            if (statusDict[item][j] == text) {
-                statusDict[item].splice(j,1);
-            }
+        for (var j = 0; j < Object.keys(inJSON.statuses).length; j++) {
+            // console.log(inJSON.statuses[item][j]) // undefined
+            // if (statusDict[item][j] == text) {
+            //     console.log("типа удалили");
+            //     statusDict[item].splice(j,1);
+            // }
         }
     }
     // 2. add our task in json
-    for (var i = 0; i < statusList.length; i++) {
+    var entries = Object.entries(inJSON.statuses)
+    for (var i in entries) {
         var item = statusList[i];
-        if (statusDict[item] == status) {
-            statusDict[item].push(text);
+        console.log(entries[i][0]+', st:'+status);
+        if (entries[i][0] == status) {
+            entries[i][1].push(text)
         }
     }
 }
@@ -69,12 +74,10 @@ button.addEventListener("click", function() {
     tablink = window.location;
     docTitle = document.title;
     textString = tablink + ' ' + docTitle
-    var el = document.getElementById("issue_status_id");
-    status = el.childNodes[0].text;
-    console.log(inJSON)
-    pushTextToJSON(textString, status, inJSON["statuses"])
-    console.log(inJSON)
-    alert(inJSON['statuses']);
+    status = document.querySelectorAll("select[id=issue_status_id] > option[selected]")[0].text
+    pushTextToJSON(textString, status)
+    // console.log(inJSON)
+    alert(inJSON.statuses["Требуется доработка"]);
   }, false);
 
 // TODO: create a file-report to send to slack
